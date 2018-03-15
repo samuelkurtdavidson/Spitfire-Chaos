@@ -21,13 +21,14 @@ public:
 		// TODO 7: Create your new module "DummyESC"
 		// it should check if player it ESC key use kbhit()
 		// http://www.cprogramming.com/fod/kbhit.html
+		
 	}
 
 	// INIT all modules
 	bool Init() 
 	{
 		for (int i = 0; i < NUM_MODULES; ++i)
-			if (modules[i]->Init() != false)
+			if (modules[i]->Init() == false)
 				return false;
 		
 		// TODO 5: Make sure that if Init() / PreUpdate/Update/PostUpdate/CleanUp return
@@ -64,12 +65,14 @@ public:
 	// TODO 3: Make sure all modules have a chance to cleanup
 	bool CleanUp()
 	{
-		for (int i = NUM_MODULES - 1; i >= 0; --i) {
 
-			delete modules[0];
-			if (modules[i]->CleanUp() != true)
-				return false;
+		for (int i = NUM_MODULES - 1; i >= 0; --i) {
+			
+			if (modules[i]->CleanUp() != true) 
+				return false;	
 		}
+
+
 		return true;
 	}
 
