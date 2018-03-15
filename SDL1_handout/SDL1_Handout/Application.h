@@ -26,41 +26,38 @@ public:
 	// INIT all modules
 	bool Init() 
 	{
-		for(int i = 0; i < NUM_MODULES; ++i)
-			modules[i]->Init();
+		for (int i = 0; i < NUM_MODULES; ++i)
+			if (modules[i]->Init() != false)
+				return false;
 		
-		// TODO 5: Make sure that if Init() / PreUpdate/Update/PostUpdate/CleanUP return
+		// TODO 5: Make sure that if Init() / PreUpdate/Update/PostUpdate/CleanUp return
 		// an exit code App exits correctly.
+
 		return true; 
 	}
 
 	// TODO 4: Add PreUpdate and PostUpdate calls
 
-	update_status PreUpdate() {
-		for (int i = 0; i < NUM_MODULES; ++i) 
+	// UPDATE all modules
+	// TODO 2: Make sure all modules receive its update
+
+	update_status Update() {
+
+		for (int i = 0; i < NUM_MODULES; ++i)
 
 			if (modules[i]->PreUpdate() != update_status::UPDATE_CONTINUE)
 				return modules[i]->PreUpdate(); // return 2 or 3 for stop or error in Pre
-
-		return update_status::UPDATE_CONTINUE;
-	}
-	// UPDATE all modules
-	// TODO 2: Make sure all modules receive its update
-	update_status Update() {
 
 		for (int i = 0; i < NUM_MODULES; ++i)
 
 			if (modules[i]->Update() != update_status::UPDATE_CONTINUE)
 				return modules[i]->Update(); // return 2 or 3 for stop or error in Update
 
-		return update_status::UPDATE_CONTINUE;; //If no issues, return 1
-	}
-
-	update_status PostUpdate() {
 		for (int i = 0; i < NUM_MODULES; ++i)
 			if (modules[i]->PostUpdate() != update_status::UPDATE_CONTINUE)
 				return modules[i]->PostUpdate();  // return 2 or 3 for stop or error in Post
-		return update_status::UPDATE_CONTINUE;
+
+		return update_status::UPDATE_CONTINUE;; //If no issues, return 1
 	}
 
 	// EXIT Update 
@@ -68,6 +65,8 @@ public:
 	bool CleanUp()
 	{
 		for (int i = NUM_MODULES - 1; i >= 0; --i) {
+
+			delete modules[0];
 			if (modules[i]->CleanUp() != true)
 				return false;
 		}
